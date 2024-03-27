@@ -1,0 +1,12 @@
+public ModelView crudpage(ServletEntity entity) throws Exception{
+    try(Connection connex=DAOConnexion.getConnexion("[databaseDriver]", "[databaseSgbd]", "[databaseHost]", "[databasePort]", "[databaseName]", "[user]", "[pwd]", [databaseUseSSL], [databaseAllowKey])){
+        ModelView model=new ModelView();
+        model.setView("pages/layout/layout.jsp");
+        [classNameMaj][] o=dao.select(connex, [classNameMaj].class);
+        model.addItem("viewpage", "[classNameMin].jsp");
+        model.addItem("title", "[classNameMaj]");
+        model.addItem("o", o);
+        [controllerForeignList]
+        return model;
+    }
+}

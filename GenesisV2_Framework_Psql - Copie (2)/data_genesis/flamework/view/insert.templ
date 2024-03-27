@@ -1,0 +1,61 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+[importForeignEntityService]
+const Api_url = [url];
+
+function Insert[nomTableMaj]() {
+    const formDataInsert = new FormData();
+
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState ({
+    });
+
+    const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    };
+
+    [foreignList]
+
+    const handleFormSubmit = async () =>{
+        [attribut]
+        const insert = insert[nomTable](formDataInsert);
+
+      if(insert==true){
+        navigate("/");
+      }else{
+        alert(insert);
+        console.log(insert)
+      }
+    }
+
+    return (
+    <div className="container-scroller">
+      <div className="container-fluid page-body-wrapper">
+        <Header /> 
+        <Sidebar /> 
+        <div className="main-panel">
+          <div className="content-wrapper">
+            <div className="row">
+              <div className="col-md-6 grid-margin stretch-card mx-auto">
+                <div className="card ">
+                  <div className="card-body">
+                    <h4 className="card-title">Insertion [nomTable]</h4>
+                      <>
+                         [champ]
+                        <button onClick={handleFormSubmit} className="btn btn-primary mr-2">
+                          Inserer
+                        </button>
+                        </>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Insert[nomTableMaj];
