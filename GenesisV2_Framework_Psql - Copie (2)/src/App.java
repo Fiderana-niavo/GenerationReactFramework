@@ -108,6 +108,7 @@ public class App {
                                 entities = database.getEntities(connect, credentials, entityName);
                                 for (int i = 0; i < entities.length; i++) {
                                         entities[i].initialize(connect, credentials, database, language);
+                                        language.generateInsertFile(entities[i]);
                                 }
                                 models = new String[entities.length];
                                 controllers = new String[entities.length];
