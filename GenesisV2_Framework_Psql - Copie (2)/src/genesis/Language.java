@@ -448,4 +448,139 @@ public class Language {
         String temp=g.generateInsertView(e, select, input, tempFormData, tempimportForeign, tempforeignList, insertTemp);
         g.creationInsertion(temp, e);
     }
+
+    // santatra
+        // generation view
+        public String lireFichier(String path) throws Exception {
+
+            BufferedReader reader = new BufferedReader(new FileReader(path));
+            StringBuilder content = new StringBuilder();
+            String line;
+    
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+            reader.close();
+    
+            return String.valueOf(content);
+        }
+    
+        public void generateViewUpdate(Entity entity , String path) throws IOException , Exception {
+            String file = Constantes.UPDATE_VIEW_TEMPLATE;
+            String template = lireFichier(file);
+            String nomTable = HandyManUtils.majStart(entity.getTableName());
+            String nomForm = "";
+            String condition = "";
+            String nomTableMn = HandyManUtils.minStart(nomTable);
+            String updateForm = "";
+            String foreign = " "; 
+            String nomFichier = path + "/Update"+ nomTable + ".jsx";
+            String importation = "";
+    
+            for(EntityField ef:entity.getFields()) {
+                updateForm += this.creationChampColonneUpdate(ef);
+                if(ef.isForeign() == true) {
+                    importation += "import {select"+HandyManUtils.majStart(ef.getName())+"} from '../services/"+HandyManUtils.majStart(ef.getName())+"Service';";
+                    foreign += this.generateFonctionForeign(ef.getName(),HandyManUtils.minStart(ef.getName()));
+                }
+            }
+            for(int i=1;i<entity.getFields().length;i++) {
+                nomForm   += "\""+entity.getFields()[i].getName()+"\": props."+entity.getFields()[i].getName()+", \n";
+                condition += this.generateCondition(entity.getFields()[i].getName());
+            }
+            template = template.replace("[formData]",nomForm);
+            template = template.replace("[condition]",condition);
+            template = template.replace("[nomTableMj]",nomTable);
+            template = template.replace("[nomTableMn]",nomTableMn);
+            template = template.replace("[inputUpdate]",updateForm);
+            template = template.replace("[foreign]", foreign);
+            template = template.replace("[importForeign]",importation);
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomFichier))) {
+                writer.write(template);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    
+        public String generateFonctionForeign(String nomTable,String nomTableMn) {
+            String foreign = "";
+            foreign += "    const ["+nomTableMn+"s, set"+nomTable+"s] = useState([]); \n";
+            foreign += "        useEffect(() => { \n";
+            foreign += "            const fetchData = async () => { \n";
+            foreign += "            const "+nomTableMn+"sData = await select"+nomTable+"(); \n";
+            foreign += "            set"+nomTable+"s("+nomTableMn+"sData); \n";
+            foreign += "        }; \n";
+            foreign += "        fetchData(); \n";
+            foreign += "    }, []); \n";
+            return foreign;
+        }
+    
+        public String generateCondition(String fields) {
+            String condition = "";
+            condition += "  if(formData."+fields+" != null) {"+"\n";
+            condition += "      formDataUpdate.append( \""+fields+"\", formData."+fields+")"+"\n";
+            condition += "  }else{ \n";
+            condition += "      formDataUpdate.append( \""+fields+"\", props."+fields+")"+"\n";
+            condition += "  } \n";
+            return condition;
+        }
+    
+        public String creationChampColonneUpdate(EntityField ef) throws Exception {
+            Generateur g = new Generateur();
+            String label = ef.getName();
+            String inputUpdate = "";
+            String foreign = "";
+            if(ef.isPrimary() == true) {
+                return inputUpdate;
+            }else if(ef.isForeign() == false) {
+                String type = g.getRemplacement().get(ef.getType());
+                inputUpdate += this.generateInputeUpdateSimple(label,type);
+            }else {
+                String label2 = ef.getReferencedField().split("id")[1];
+                inputUpdate += this.generateSelectUpdateForeign(label2,label);
+            }
+            return inputUpdate;
+        }
+    
+        public String generateInputeUpdateSimple(String label,String type) {
+            return "<label>" + label + ":\n        <input name='"+label+"' type='"+type+"' values={formData."+label+"} onChange={handleInputChange} /> \n </label> \n";
+        }
+    
+        public String generateSelectUpdateForeign(String label2,String label) {
+            String select = "";
+            String foreign = " ";
+            foreign += "{"+label+"s.map(("+label+",index) => ( \n";
+            foreign +=          "<option key={index} value={"+label+".id"+label+"}> {"+label+".nom"+label+"}</option> \n";
+            foreign += "))}";
+            select += "<label> \n" + label2 + ":\n            <select name='"+label+"'> \n   "+ foreign
+            +"\n          </select> \n </label> \n";
+            return select;
+        }
+    
+        // generation Service
+        public void generateService(Entity entity,String path) throws IOException,Exception {
+            String template = lireFichier("D:/S5/GenesisV2_Framework_Psql/bin/data_genesis/flamework/Service/ServiceTemplate.templ");
+            String nomTable = HandyManUtils.majStart(entity.getTableName());
+            String nomTableMn = HandyManUtils.minStart(nomTable);
+            String nomFichier = path + "/"+nomTable+"Service"+".jsx";
+            template = template.replace("[nomTableMj]",nomTable);
+            template = template.replace("[nomTableMn]",nomTableMn);
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomFichier))) {
+                writer.write(template);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    
+        // generation API
+        public void generateAPI(String nomProjet,String path) throws IOException,Exception {
+            String template = lireFichier("D:/S5/GenesisV2_Framework_Psql/bin/data_genesis/flamework/Api/ApiTemplate.templ");
+            template = template.replace("[nomProjet]",nomProjet);
+            String nomFichier = path + "/ApiUrl.jsx";
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomFichier))) {
+                writer.write(template);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 }
