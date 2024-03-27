@@ -84,14 +84,20 @@ public class GenerateInsert {
         return tempAttributeFormData.replace("[nomTableMaj]", HandyManUtils.majStart(ef.getReferencedField().split("id")[1]));
     }
 
-    public  String generateInsertView(Entity e,String select,String input,String tempformDataAttribute,String tempimportForeign,String tempforeignList,String templateInsert){
+    public String generateImportSelectEntite(EntityField ef, String importInsertEntite) {
+        return importInsertEntite.replace("[nomTableMaj]", HandyManUtils.majStart(ef.getReferencedField().split("id")[1]));
+    }
+
+    public  String generateInsertView(Entity e,String select,String input,String tempformDataAttribute,String tempimportForeign,String tempforeignList,String templateInsert,String importInsertEntite){
         String champ="";
         String formDataAttribute="";
         String importForeign="";
         String foreignList="";
         String temp="";
+        String insert="";
         for (EntityField ef : e.getFields()) {
             formDataAttribute+=generateAttribute(ef, tempformDataAttribute);
+            insert+=generateImportSelectEntite(ef,importInsertEntite);
             if(ef.isForeign()){
                 champ+="\n"+generateSelect(ef, select);
                 importForeign+=generateImportForeign(ef, tempimportForeign);
@@ -104,6 +110,7 @@ public class GenerateInsert {
         temp=templateInsert.replace("[nomtableMaj]", HandyManUtils.majStart(e.getTableName()));
         System.out.println(temp+"temp");
          temp=temp.replace("[importForeignEntityService]", importForeign);
+         temp+=temp.replace("[importInsertEntite]",insert);
         temp=temp.replace("[foreignList]", foreignList);
         temp=temp.replace("[nomtable]", HandyManUtils.minStart(e.getTableName()));
         temp=temp.replace("[attribut]", formDataAttribute);
