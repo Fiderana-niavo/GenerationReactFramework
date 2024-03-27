@@ -84,8 +84,13 @@ public class GenerateInsert {
         return tempAttributeFormData.replace("[nomTableMaj]", HandyManUtils.majStart(ef.getReferencedField().split("id")[1]));
     }
 
+<<<<<<< Updated upstream:GenesisV2_Framework_Psql/src/genesis/GenerateInsert.java
     public String generateImportSelectEntite(EntityField ef, String importInsertEntite) {
         return importInsertEntite.replace("[nomTableMaj]", HandyManUtils.majStart(ef.getReferencedField().split("id")[1]));
+=======
+    public String generateImportSelectEntite(String tableName, String importInsertEntite) {
+        return importInsertEntite.replace("[nomTableMaj]", HandyManUtils.majStart(tableName));
+>>>>>>> Stashed changes:GenesisV2_Framework_Psql - Copie (2)/src/genesis/GenerateInsert.java
     }
 
     public  String generateInsertView(Entity e,String select,String input,String tempformDataAttribute,String tempimportForeign,String tempforeignList,String templateInsert,String importInsertEntite){
@@ -94,7 +99,11 @@ public class GenerateInsert {
         String importForeign="";
         String foreignList="";
         String temp="";
+<<<<<<< Updated upstream:GenesisV2_Framework_Psql/src/genesis/GenerateInsert.java
         String insert="";
+=======
+        String insert=generateImportSelectEntite(e.getTableName(),importInsertEntite);
+>>>>>>> Stashed changes:GenesisV2_Framework_Psql - Copie (2)/src/genesis/GenerateInsert.java
         for (EntityField ef : e.getFields()) {
             formDataAttribute+=generateAttribute(ef, tempformDataAttribute);
             insert+=generateImportSelectEntite(ef,importInsertEntite);
@@ -110,7 +119,11 @@ public class GenerateInsert {
         temp=templateInsert.replace("[nomtableMaj]", HandyManUtils.majStart(e.getTableName()));
         System.out.println(temp+"temp");
          temp=temp.replace("[importForeignEntityService]", importForeign);
+<<<<<<< Updated upstream:GenesisV2_Framework_Psql/src/genesis/GenerateInsert.java
          temp+=temp.replace("[importInsertEntite]",insert);
+=======
+         temp=temp.replace("[importInsertEntite]",insert);
+>>>>>>> Stashed changes:GenesisV2_Framework_Psql - Copie (2)/src/genesis/GenerateInsert.java
         temp=temp.replace("[foreignList]", foreignList);
         temp=temp.replace("[nomtable]", HandyManUtils.minStart(e.getTableName()));
         temp=temp.replace("[attribut]", formDataAttribute);

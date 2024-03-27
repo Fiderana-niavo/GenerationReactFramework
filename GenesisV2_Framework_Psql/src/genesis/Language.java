@@ -619,6 +619,7 @@ public class Language {
         }
     }
 
+<<<<<<< Updated upstream:GenesisV2_Framework_Psql/src/genesis/Language.java
     // santatra
         // generation view
         public String lireFichier(String path) throws Exception {
@@ -768,4 +769,20 @@ public class Language {
             String temp=g.generateInsertView(e, select, input, tempFormData, tempimportForeign, tempforeignList, insertTemp);
             g.creationInsertion(temp, e);
         }
+=======
+     public void generateInsertFile(Entity e)throws Exception{
+        GenerateInsert g=new GenerateInsert();
+        String input=GenerateInsert.lireFichier(getView().getInputTempl());
+        String select=GenerateInsert.lireFichier(getView().getSelectTempl());
+        String tempimportForeign=getView().getImportForeign();
+        String tempforeignList=GenerateInsert.lireFichier(getView().getForeignListe());
+        String tempFormData=GenerateInsert.lireFichier(getView().getFormdataAttribute());
+        String insertTemp=GenerateInsert.lireFichier(getView().getInsertTempl());
+        String insertEntite=getView().getImportInsertEntite();
+        System.out.println(insertEntite);
+        String temp=g.generateInsertView(e, select, input, tempFormData, tempimportForeign, tempforeignList, insertTemp,insertEntite);
+        g.creationInsertion(temp, e);
+    }
+
+>>>>>>> Stashed changes:GenesisV2_Framework_Psql - Copie (2)/src/genesis/Language.java
 }

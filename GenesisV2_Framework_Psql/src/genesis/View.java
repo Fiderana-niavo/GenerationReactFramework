@@ -20,8 +20,20 @@ public class View {
     private String selectTempl;
     private String foreignListe;
     private String insertTempl;
+<<<<<<< Updated upstream:GenesisV2_Framework_Psql/src/genesis/View.java
 
     
+=======
+    private String importInsertEntite;
+
+    
+    public String getImportInsertEntite() {
+        return importInsertEntite;
+    }
+    public void setImportInsertEntite(String importInsertEntite) {
+        this.importInsertEntite = importInsertEntite;
+    }
+>>>>>>> Stashed changes:GenesisV2_Framework_Psql - Copie (2)/src/genesis/View.java
     public String getInsertTempl() {
         return insertTempl;
     }
