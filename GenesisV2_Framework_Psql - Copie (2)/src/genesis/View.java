@@ -14,32 +14,6 @@ public class View {
     private String viewName, viewContent;
     private String viewSavePath;
     private String viewExtension;
-    private String importForeign;
-    private String inputTempl;
-    private String formdataAttribute;
-    private String selectTempl;
-    private String foreignListe;
-    private String insertTempl;
-
-    
-    public String getInsertTempl() {
-        return insertTempl;
-    }
-    public void setInsertTempl(String insertTempl) {
-        this.insertTempl = insertTempl;
-    }
-    public String getForeignListe() {
-        return foreignListe;
-    }
-    public void setForeignListe(String foreignListe) {
-        this.foreignListe = foreignListe;
-    }
-    public String getImportForeign() {
-        return importForeign;
-    }
-    public void setImportForeign(String importForeign) {
-        this.importForeign = importForeign;
-    }
     public String getViewForeignList() {
         return viewForeignList;
     }
@@ -111,24 +85,6 @@ public class View {
     }
     public void setViewExtension(String viewExtension) {
         this.viewExtension = viewExtension;
-    }
-    public String getInputTempl() {
-        return inputTempl;
-    }
-    public void setInputTempl(String inputTempl) {
-        this.inputTempl = inputTempl;
-    }
-    public String getFormdataAttribute() {
-        return formdataAttribute;
-    }
-    public void setFormdataAttribute(String formdataAttribute) {
-        this.formdataAttribute = formdataAttribute;
-    }
-    public String getSelectTempl() {
-        return selectTempl;
-    }
-    public void setSelectTempl(String selectTempl) {
-        this.selectTempl = selectTempl;
     }
     
 }

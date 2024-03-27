@@ -1,0 +1,37 @@
+import { React } from 'react';
+import [classNameMaj] from '../components/[classNameMaj]';
+import { useState, useEffect } from 'react';
+import { select[classNameMaj] } from '../services/[classNameMaj]Service';
+
+const Select[classNameMaj] = ({ id }) => {
+    const [[variable]s, setData] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await select[classNameMaj]();
+            setData(data);
+        };
+        fetchData();
+    }, []);
+
+
+
+    return (
+      <div className="container-scroller">          
+      <table border="1">
+        <thead>
+          <tr>
+            [headerTab]
+          </tr>
+        </thead>
+      <tbody>
+      { [variable]s.map(([classNameMin],index) => (
+        <[classNameMaj] key={index} [fields] />
+      ))}
+      </tbody>
+    </table>
+        </div>
+        
+    );
+};
+
+export default Select[classNameMaj];

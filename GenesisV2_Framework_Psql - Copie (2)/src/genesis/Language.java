@@ -1,5 +1,7 @@
 package genesis;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import handyman.HandyManUtils;
@@ -360,16 +362,12 @@ public class Language {
     public String generateView(Entity entity, String projectName) throws IOException, Exception {
         String content = HandyManUtils.getFileContent(
                 Constantes.DATA_PATH + "/" + getView().getViewContent() + "." + Constantes.VIEW_TEMPLATE_EXT);
-        // String
-        // insertContent=GenerateInsert.lireFichier("data_genesis/flamework/view/insert.temp");
-        // System.out.println(insertContent);
         String foreignList = "";
         String tableHeader = "";
         String tableLine = "";
         String foreignGet;
         String updateForm = "", insertForm = "";
         for (EntityField ef : entity.getFields()) {
-         //   System.out.println(ef.isForeign()+ef.getReferencedField());
             foreignGet = "";
             tableHeader += getView().getViewTableHeader();
             tableHeader = tableHeader.replace("[fieldNameFormattedMaj]", HandyManUtils.formatReadable(ef.getName()));
@@ -437,15 +435,185 @@ public class Language {
         return content;
     }
 
-    public void generateInsertFile(Entity e)throws Exception{
-        GenerateInsert g=new GenerateInsert();
-        String input=GenerateInsert.lireFichier(getView().getInputTempl());
-        String select=GenerateInsert.lireFichier(getView().getSelectTempl());
-        String tempimportForeign=getView().getImportForeign();
-        String tempforeignList=GenerateInsert.lireFichier(getView().getForeignListe());
-        String tempFormData=GenerateInsert.lireFichier(getView().getFormdataAttribute());
-        String insertTemp=GenerateInsert.lireFichier(getView().getInsertTempl());
-        String temp=g.generateInsertView(e, select, input, tempFormData, tempimportForeign, tempforeignList, insertTemp);
-        g.creationInsertion(temp, e);
+    /*********************************************************** */
+
+    public String createComposant(Entity entity, String projectName) throws IOException, Exception {
+
+        String directory = projectName + "/composants/";
+        try {
+            creerDossier(directory);
+
+            String contentFile = "D:\\GenesisV2_Framework_Psql\\Generateur\\GenesisV2_Framework_Psql\\template\\composant.templ";
+            String content = HandyManUtils.getFileContent(contentFile);
+
+            String tableHeader = "";
+            String tableLineTd = "";
+
+            String tableauDebut = "<td>{props.";
+            String tableauFin = "}</td>";
+            String propTypesDeclaration = "";
+
+            for (EntityField ef : entity.getFields()) {
+                String fieldNameMin = HandyManUtils.minStart(ef.getName());
+                String fieldType = "PropTypes.string";
+                tableHeader += getView().getViewTableHeader();
+                // Concaténer les valeurs de chaque champ à tableLine
+                tableLineTd += tableauDebut + HandyManUtils.minStart(ef.getName()) + tableauFin;
+                content = content.replace("[fieldId]", HandyManUtils.minStart(ef.getName()));
+                content = content.replace("[propsType]", "PropTypes.string");
+                propTypesDeclaration += "\n    " + fieldNameMin + " : " + fieldType + ",";
+
+            }
+
+            // Remplacer [tableLine] par la valeur complète de tableLine
+            content = content.replace("[tableLine]", tableLineTd);
+            content = content.replace("[propTypes]", propTypesDeclaration);
+
+            String className = HandyManUtils.majStart(entity.getClassName());
+            content = content.replace("[classNameMaj]", className);
+            content = content.replace("[classNameMin]", HandyManUtils.minStart(entity.getClassName()));
+
+            // Écriture du contenu dans le fichier
+            try {
+                writeToFile(directory + className + ".jsx", content);
+                System.out.println("Fichier créé avec succès : " + directory + className + ".jsx");
+            } catch (IOException e) {
+                System.err.println("Erreur lors de l'écriture dans le fichier : " + e.getMessage());
+                return null;
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la création du composant : " + e.getMessage());
+            throw e; // Propagez l'exception pour la gestion à un niveau supérieur si nécessaire
+        }
+
+        return directory;
     }
+
+    public String createPage(Entity entity, String projectName) throws IOException, Exception {
+
+        String directory = projectName + "/pages/";
+        try {
+            creerDossier(directory);
+
+            String contentFile = "D:\\GenesisV2_Framework_Psql\\Generateur\\GenesisV2_Framework_Psql\\template\\page.templ";
+            String content = HandyManUtils.getFileContent(contentFile);
+
+            String tableHeader = "";
+            String tableLineTd = "";
+
+            String thDebut = "<th>";
+            String thFin = "</th>";
+            String column = "";
+
+            for (EntityField ef : entity.getFields()) {
+                String fieldNameMin = HandyManUtils.minStart(ef.getName());
+                String classNameMin = HandyManUtils.minStart(entity.getClassName());
+                tableHeader += getView().getViewTableHeader();
+                // Concaténer les valeurs de chaque champ à tableLine
+                tableLineTd += thDebut + HandyManUtils.minStart(ef.getName()) + thFin;
+                content = content.replace("[fieldId]", HandyManUtils.minStart(ef.getName()));
+                content = content.replace("[propsType]", "PropTypes.string");
+                column += "\n    " + fieldNameMin + " = { " + classNameMin + "." + fieldNameMin + "}";
+
+            }
+
+            // Remplacer [tableLine] par la valeur complète de tableLine
+            content = content.replace("[headerTab]", tableLineTd);
+            content = content.replace("[fields]", column);
+
+            String className = HandyManUtils.majStart(entity.getClassName());
+
+            content = content.replace("[classNameMaj]", className);
+            content = content.replace("[classNameMin]", HandyManUtils.minStart(entity.getClassName()));
+            content = content.replace("[variable]", HandyManUtils.minStart(entity.getClassName()));
+
+            // Écriture du contenu dans le fichier
+            try {
+                writeToFile(directory + "Select" + className + ".jsx", content);
+                System.out.println("Fichier créé avec succès : " + directory + className + ".jsx");
+            } catch (IOException e) {
+                System.err.println("Erreur lors de l'écriture dans le fichier : " + e.getMessage());
+                return null;
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la création du composant : " + e.getMessage());
+            throw e; // Propagez l'exception pour la gestion à un niveau supérieur si nécessaire
+        }
+
+        return directory;
+    }
+
+    public String generateService(Entity entity, String projectName) throws IOException {
+        // Chemin complet du répertoire service
+        String serviceDirectory = projectName + "/services/";
+
+        // Créer le répertoire service s'il n'existe pas
+        creerDossier(serviceDirectory);
+
+        // Chemin du fichier de contenu
+        String contentFilePath = "D:\\GenesisV2_Framework_Psql\\Generateur\\GenesisV2_Framework_Psql\\template\\service.temp";
+
+        // Lire le contenu du fichier
+        String content;
+        try {
+            content = HandyManUtils.getFileContent(contentFilePath);
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la lecture du fichier de contenu : " +
+                    e.getMessage());
+            return null; // Ou lancez une exception si vous préférez
+        }
+
+        // Remplacement des placeholders dans le contenu
+        content = content.replace("[classNameMaj]",
+                HandyManUtils.majStart(entity.getClassName()));
+        content = content.replace("[classNameMin]",
+                HandyManUtils.minStart(entity.getClassName()));
+        content = content.replace("[projectName]", projectName);
+
+        String className = HandyManUtils.majStart(entity.getClassName());
+        content = content.replace("[classNameMaj]", className);
+
+        // Écriture du contenu dans le fichier
+        try {
+            writeToFile(serviceDirectory + className + "Service.jsx", content);
+            System.out.println("Fichier créé avec succès : " + serviceDirectory +
+                    className + ".jsx");
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'écriture dans le fichier : " +
+                    e.getMessage());
+            return null; // Ou lancez une exception si vous préférez
+        }
+
+        return serviceDirectory;
+    }
+
+    public void creerDossier(String serviceDirectory) {
+        try {
+            File directory = new File(serviceDirectory);
+            if (!directory.exists()) {
+                boolean created = directory.mkdirs();
+                if (created) {
+                    System.out.println("Répertoire  créé avec succès.");
+                } else {
+                    throw new IOException("Erreur lors de la création du répertoire ");
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la création du répertoire : " + e.getMessage());
+            return; // Ou lancez une exception si vous préférez
+        }
+    }
+
+    public void writeToFile(String filePath, String content) throws IOException {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(filePath); // Il manque le nom de fichier ici
+            writer.write(content);
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
+    }
+
 }

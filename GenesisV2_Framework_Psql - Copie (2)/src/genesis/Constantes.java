@@ -9,6 +9,4 @@ public class Constantes {
     public static final String MODEL_TEMPLATE_EXT="templ";
     public static final String CONTROLLER_TEMPLATE_EXT="templ";
     public static final String VIEW_TEMPLATE_EXT="viewtempl";
-    public static final String VIEW_INSERT="data_genesis/view/insert.temp";
-
 }

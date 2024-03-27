@@ -6,6 +6,17 @@
   version="6.0"
   metadata-complete="true">
     <display-name>[projectNameMaj]</display-name>
+
+    <filter>
+      <filter-name>CorsFilter</filter-name>
+      <filter-class>CORS.CorsFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+      <filter-name>CorsFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <servlet>
       <servlet-name>FrontServlet</servlet-name>
       <servlet-class>eriq.flamework.servlet.FrontServlet</servlet-class>

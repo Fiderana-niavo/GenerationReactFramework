@@ -1,0 +1,29 @@
+import axios from "axios";
+
+export async function select[classNameMaj]() {
+    try {
+        const response = await axios.get('http://localhost:8081/[projectName]/tocrud[classNameMin].do');
+        if (Array.isArray(response.data.o)) {
+            return response.data.o;
+        } else {
+            console.error('La réponse de l\'API n\'est pas un tableau JSON:', response.data);
+            return [];
+        }
+    } catch (error) {
+        // console.error('Erreur lors de la récupération des marques:', error);
+        return [];
+    }
+}
+
+export async function delete[classNameMaj](formData) {
+    try {
+      const response = await axios.post('http://localhost:8081/[projectName]/delete[classNameMin].do', formData);
+      return true;
+  
+    } catch (error) {
+      console.error('Erreur lors de la suppression des données:', error);
+      const erreur = "Erreur lors de la suppression: " + error;
+      return erreur;
+    }
+}
+

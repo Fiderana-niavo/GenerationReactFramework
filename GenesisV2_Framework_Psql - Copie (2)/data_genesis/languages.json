@@ -49,7 +49,7 @@
                 "@Column(\"[columnName]\")"
             ],
             "modelFieldCase":"Min",
-            "modelFieldContent":"private [fieldType] [fieldName[modelFieldCase]];",
+            "modelFieldContent":"public [fieldType] [fieldName[modelFieldCase]];",
             "modelGetter":"public [fieldType] get[fieldNameMaj](){ return [fieldName[modelFieldCase]]; }",
             "modelSetter":"public void set[fieldNameMaj]([fieldType] o){ [fieldName[modelFieldCase]]=o; }",
             "modelConstructors":[
@@ -67,8 +67,7 @@
                 "import eriq.flamework.annotations.Controller;",
                 "import eriq.flamework.annotations.Singleton;",
                 "import eriq.flamework.annotations.URLMapping;",
-                "import eriq.flamework.model.ModelRedirect;",
-                "import eriq.flamework.model.ModelView;",
+                "import eriq.flamework.model.ModelRest;",
                 "import eriq.flamework.servlet.ServletEntity;",
                 "import veda.godao.DAO;",
                 "import veda.godao.utils.DAOConnexion;",
@@ -164,14 +163,7 @@
             "viewName":"[classNameMin]",
             "viewContent":"flamework/view/flameworkView",
             "viewSavePath":"[projectNameMaj]/web/pages",
-            "viewExtension":"jsp",
-
-            "importForeign":"import { insert[nomTableMaj] } from '../service/[nomTableMaj]Service.jsx'; \n",
-            "inputTempl":"data_genesis/flamework/view/components/FlameworkViewinputReact.templ",
-            "selectTempl":"data_genesis/flamework/view/components/flameworkViewSelectFormReact.templ",
-            "formdataAttribute":"data_genesis/flamework/view/components/flameworkViewFormDataAttributReact.templ",
-            "foreignListe":"data_genesis/flamework/view/components/FlameworkViewForeignDataReact.templ",
-            "insertTempl":"data_genesis/flamework/view/insert.templ"
+            "viewExtension":"jsp"
         },
         "customChanges":[],
         "navbarLinks":{

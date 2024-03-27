@@ -1,0 +1,42 @@
+import { React, useState, prevState } from 'react';
+import { PropTypes } from 'prop-types'
+import { Link, useNavigate } from 'react-router-dom';
+import { delete[classNameMaj] } from '../services/[classNameMaj]Service';
+
+const [classNameMaj] = props => {
+    const formDataDelete = new FormData();
+    formDataDelete.append('[fieldId]', props.[fieldId]);
+
+    const navigate = useNavigate();
+    const handleFormSubmit = async () => {
+        try {
+            const suppr =  await delete[classNameMaj](formDataDelete);
+            if(!suppr){
+                alert(suppr);
+            }else{
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const [isOpen, setIsOpen] = useState(false);
+    
+    return (
+        <tr>
+        [tableLine]
+        <td>
+            <button onClick={handleFormSubmit}>supprimer</button>
+        </td>
+        </tr> 
+       
+    );
+};
+
+[classNameMaj].propTypes = {
+    [propTypes]
+}
+
+
+export default [classNameMaj];
