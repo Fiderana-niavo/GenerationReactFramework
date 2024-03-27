@@ -9,6 +9,13 @@
             "name": "App",
             "request": "launch",
             "mainClass": "App",
+            "projectName": "GenesisV2_Framework_Psql_e2c08d60"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "App",
             "projectName": "GenesisV2_Framework_Psql - Copie (2)_12711a18"
         },
         {
