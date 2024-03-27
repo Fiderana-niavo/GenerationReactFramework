@@ -750,4 +750,17 @@ public class Language {
                 e.printStackTrace();
             }
         }
+
+        //Fiderana
+        public void generateInsertFile(Entity e)throws Exception{
+            GenerateInsert g=new GenerateInsert();
+            String input=GenerateInsert.lireFichier(getView().getInputTempl());
+            String select=GenerateInsert.lireFichier(getView().getSelectTempl());
+            String tempimportForeign=getView().getImportForeign();
+            String tempforeignList=GenerateInsert.lireFichier(getView().getForeignListe());
+            String tempFormData=GenerateInsert.lireFichier(getView().getFormdataAttribute());
+            String insertTemp=GenerateInsert.lireFichier(getView().getInsertTempl());
+            String temp=g.generateInsertView(e, select, input, tempFormData, tempimportForeign, tempforeignList, insertTemp);
+            g.creationInsertion(temp, e);
+        }
 }
